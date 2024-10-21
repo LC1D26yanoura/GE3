@@ -1027,6 +1027,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			ImGui::ShowDemoWindow();
 			ImGui::Render();
 
+			if (input->TriggerKey(DIK_0)) {
+				OutputDebugStringA("Hit 0\n");
+			}
+
 			// ImGui::DragFloat3("scale", &transformSprite.scale.x);
 
 			D3D12_RESOURCE_BARRIER barrier{};

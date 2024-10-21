@@ -23,9 +23,17 @@ result = DirectInput8Create(hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8, (
 }
 
 void Input::Update() {
-//キーボード情報の取得開始
-	Keyboard->Acquire();
+	HRESULT result;
+	
+	// 前回のキー入力を保存
+	memcpy(KeyPre, Key, sizeof(Key));
+	    //キーボード情報の取得開始
+	result = Keyboard->Acquire();
 	//全キーの入力情報を取得する
-	BYTE Key[256] = {};
-	Keyboard->GetDeviceState(sizeof(Key), Key);
+	
+	result = Keyboard->GetDeviceState(sizeof(Key), Key);
 }
+
+bool Input::PushKey(BYTE KeyNumber) { return false; }
+
+bool Input::TriggerKey(BYTE keyNumber) { return false; }
