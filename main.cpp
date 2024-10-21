@@ -940,7 +940,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	scissorRect.top = 0;
 	scissorRect.bottom = kClientHeight;
 
-
+	
 
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
