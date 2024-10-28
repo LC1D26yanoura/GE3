@@ -1118,11 +1118,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			assert(SUCCEEDED(hr));
 			hr = commandList->Reset(commandAllocator.Get(), nullptr);
 			assert(SUCCEEDED(hr));
-		}
-	}
 
 	//入力開放
 	delete input;
+
+		}
+	}
+
 	
 
 	ImGui_ImplDX12_Shutdown();
