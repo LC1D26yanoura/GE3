@@ -14,5 +14,6 @@ public:
 
 private:
 	//キーボードのデバイス
+	ComPtr<IDirectInput8> directInput;
 	ComPtr<IDirectInputDevice8> Keyboard;
 };
