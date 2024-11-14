@@ -34,6 +34,13 @@ void Input::Update() {
 	result = Keyboard->GetDeviceState(sizeof(Key), Key);
 }
 
-bool Input::PushKey(BYTE KeyNumber) { return false; }
+bool Input::PushKey(BYTE KeyNumber) {
+	if (Key[KeyNumber]) {
+		return true;
+	}return false; }
 
-bool Input::TriggerKey(BYTE keyNumber) { return false; }
+bool Input::TriggerKey(BYTE keyNumber) { 
+	if (KeyPre[keyNumber] == 0 && Key[keyNumber] != 0) {
+		return true;
+	}
+	return false; }

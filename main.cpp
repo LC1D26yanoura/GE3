@@ -943,17 +943,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	//ポインタ
 	Input* input = nullptr;
 
-	//入力の初期化
-	input = new Input();
-	input->Initialize(wc.hInstance,hwnd);
-
-	//入力の更新
-	input->Update();
-
-	//入力開放
-	delete input;
-
-	
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGui::StyleColorsDark();
@@ -962,6 +951,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		device.Get(), swapChainDesc.BufferCount, rtvDesc.Format, srvDescriptorHeap.Get(), srvDescriptorHeap->GetCPUDescriptorHandleForHeapStart(),
 		srvDescriptorHeap->GetGPUDescriptorHandleForHeapStart());
 
+	//入力の初期化
+	input = new Input();
+	input->Initialize(wc.hInstance,hwnd);
+
 	while (msg.message != WM_QUIT) {
 
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
@@ -969,6 +962,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			DispatchMessage(&msg);
 		}
 		else {
+
 
 			// ゲーム処理
 
@@ -1027,6 +1021,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			ImGui::ShowDemoWindow();
 			ImGui::Render();
 
+
+	//入力の更新
+	input->Update();
 			if (input->TriggerKey(DIK_0)) {
 				OutputDebugStringA("Hit 0\n");
 			}
@@ -1130,6 +1127,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			assert(SUCCEEDED(hr));
 		}
 	}
+
+	//入力開放
+	delete input;
 
 	ImGui_ImplDX12_Shutdown();
 	ImGui_ImplWin32_Shutdown();
