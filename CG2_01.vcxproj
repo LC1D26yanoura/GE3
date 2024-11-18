@@ -21,6 +21,7 @@
     <ClCompile Include="externals\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="WinApp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="affine.h" />
@@ -39,6 +40,7 @@
     <ClInclude Include="Vector4.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Matrix3x3.h" />
+    <ClInclude Include="WinApp.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
