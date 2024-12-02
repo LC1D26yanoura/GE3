@@ -3,12 +3,13 @@
 #include <wrl.h>
 #define DIRCTINPUT_VERSION 0x0800
 #include <dinput.h>
+#include "WinApp.h"
 class Input {
 public:
 	// namespace省略
 	template<class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	// 初期化
-	void Initialize(HINSTANCE hInstance, HWND hwnd);
+	void Initialize(WinApp*winApp);
 	// 更新
 	void Update();
 	/// <summary>
@@ -31,4 +32,7 @@ private:
 	BYTE Key[256] = {};
 	// 前回のキーの状態
 	BYTE KeyPre[256] = {};
+	//WindowsAPI
+	WinApp* winApp = nullptr;
+	ComPtr<IDirectInput8> directInput;
 };

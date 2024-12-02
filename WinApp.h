@@ -1,5 +1,6 @@
 #pragma once
 #include <Windows.h>
+#include <cstdint>
 class WinApp
 {
 public:
@@ -12,6 +13,8 @@ public:
 	void Initialize();
 
 	void Update();
+
+	void Finalize();
 	//getter
 	HWND GetHwnd() const { return hwnd; }
 	HINSTANCE GetHinstance()const { return wc.hInstance; }
