@@ -40,7 +40,7 @@ void WinApp::Initialize()
 	AdjustWindowRect(&wrc, WS_OVERLAPPEDWINDOW, false);
 
 	hwnd = CreateWindow(
-		wc.lpszClassName,
+		wc.lpszClassName,　
 		L"CG2",
 		WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT,
