@@ -484,12 +484,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	Input* input = nullptr;
 	WinApp* winApp = nullptr;
 
-	//入力の初期化
-	input = new Input();
-	input->Initialize(winApp);
 	//WindowsAPIの初期化
 	winApp = new WinApp();
 	winApp->Initialize();
+	//入力の初期化
+	input = new Input();
+	input->Initialize(winApp);
 
 	D3DResourceLeakChecker leakCheck;
 
@@ -963,12 +963,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		device.Get(), swapChainDesc.BufferCount, rtvDesc.Format, srvDescriptorHeap.Get(), srvDescriptorHeap->GetCPUDescriptorHandleForHeapStart(),
 		srvDescriptorHeap->GetGPUDescriptorHandleForHeapStart());
 
-	//メインループ
+
 	while (msg.message != WM_QUIT) {
 
-		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
+		if (winApp->ProcessMessage()) {
+			//ゲームループを抜ける
+			break;
 		}
 		else {
 

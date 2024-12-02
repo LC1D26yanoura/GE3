@@ -17,7 +17,9 @@ public:
 	void Finalize();
 	//getter
 	HWND GetHwnd() const { return hwnd; }
-	HINSTANCE GetHinstance()const { return wc.hInstance; }
+	HINSTANCE GetHinstance() const { return wc.hInstance; }
+	//メッセージの処理
+	bool ProcessMessage();
 private:
 	//ウィンドウハンドル
 	HWND hwnd = nullptr;
