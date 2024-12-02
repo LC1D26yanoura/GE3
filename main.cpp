@@ -7,6 +7,7 @@
 #include <d3d12.h>
 #include <dxgi1_6.h>
 #include "Input.h"
+#include"WinApp.h"
 
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")
@@ -942,6 +943,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	//ポインタ
 	Input* input = nullptr;
+	WinApp* winApp = nullptr;
 
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -954,7 +956,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	//入力の初期化
 	input = new Input();
 	input->Initialize(wc.hInstance,hwnd);
-
+	//WindowsAPIの初期化
+	winApp = new WinApp();
+	winApp->Initialize();
+	//メインループ
 	while (msg.message != WM_QUIT) {
 
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
@@ -1128,8 +1133,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		}
 	}
 
-	//入力開放
+	//開放
 	delete input;
+	delete winApp;
 
 	ImGui_ImplDX12_Shutdown();
 	ImGui_ImplWin32_Shutdown();
