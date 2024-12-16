@@ -22,7 +22,7 @@ public:
     // スワップチェーンの生成
     void CreateSwapchain();
     // 深度バッファの生成
-    void CreateDepthBuffer();
+    Microsoft::WRL::ComPtr<ID3D12Resource>CreateDepthBuffer();
     // 各種デスクリプタヒープの生成
     void CreateDescriptorHeap();
     // レンダーターゲットビューの初期化
@@ -39,7 +39,35 @@ public:
     void CreateDXCCompiler();
     // ImGuiの初期化
     void InitializeImGui();
+    //描画前処理
+    void PreDraw();
+    //描画後処理
+    void PostDraw();
 
+  
+    Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> CreateDescriptorHeap(Microsoft::WRL::ComPtr<ID3D12Device> device,
+    D3D12_DESCRIPTOR_HEAP_TYPE heapType, UINT numDescriptors, bool shaderVisible);
+
+    /// <summary>
+   /// 指定番号のCPUデスクリプタハンドルを取得する
+   /// </summary>
+    static D3D12_CPU_DESCRIPTOR_HANDLE GetCPUDescriptorHandle(const Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>& descriptorHeap, uint32_t descriptorSize, uint32_t index);
+
+    /// <summary>
+    /// 指定番号のGPLUデスクリプタハンドルを取得する
+    /// </summary>
+    static D3D12_GPU_DESCRIPTOR_HANDLE GetGPUDescriptorHandle(const Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>& descriptorHeap,
+        uint32_t descriptorSize, uint32_t index);
+    ///<summary>
+    ///SRVの指定番号のCPUデスクリプタハンドルを取得する    
+    /// </summary>
+    D3D12_CPU_DESCRIPTOR_HANDLE GetSRVCPUDescriptorHandle(uint32_t index);
+    /// <summary>
+    /// SRVの指定番号のGPUデスクリプタハンドルを取得する
+    /// </summary>
+    D3D12_GPU_DESCRIPTOR_HANDLE GetSRVGPUDescriptorHandle(uint32_t index);
+
+private:
 
     //// デバイスの生成
     //Microsoft::WRL::ComPtr<ID3D12Debug1> debugController = nullptr;
@@ -64,33 +92,20 @@ public:
     std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, 2> swapChainResources;
 
     D3D12_RENDER_TARGET_VIEW_DESC rtvDesc{};
+    //RTVを二つ作るのでdescriptorを二つ用意
+    D3D12_CPU_DESCRIPTOR_HANDLE rtvHandles[2];
+    D3D12_DEPTH_STENCIL_VIEW_DESC dsvDesc{};
+
     Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> rtvDescriptorHeap = nullptr;
     Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> srvDescriptorHeap = nullptr;
     Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> dsvDescriptorHeap = nullptr;
 
+    Microsoft::WRL::ComPtr <ID3D12Resource> depthStencilResource;
+
     //Microsoft::WRL::ComPtr<ID3D12Resource> CreateTextureResource(Microsoft::WRL::ComPtr<ID3D12Device> device, const DirectX::TexMetadata& metadata);
-    Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> CreateDescriptorHeap(Microsoft::WRL::ComPtr<ID3D12Device> device,
-        D3D12_DESCRIPTOR_HEAP_TYPE heapType, UINT numDescriptors, bool shaderVisible);
+ 
 
-    /// <summary>
-    /// 指定番号のCPUデスクリプタハンドルを取得する
-    /// </summary>
-    static D3D12_CPU_DESCRIPTOR_HANDLE GetCPUDescriptorHandle(const Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>& descriptorHeap, uint32_t descriptorSize, uint32_t index);
-
-    /// <summary>
-    /// 指定番号のGPLUデスクリプタハンドルを取得する
-    /// </summary>
-    static D3D12_GPU_DESCRIPTOR_HANDLE GetGPUDescriptorHandle(const Microsoft::WRL::ComPtr<ID3D12DescriptorHeap>& descriptorHeap,
-        uint32_t descriptorSize, uint32_t index);
-    ///<summary>
-    ///SRVの指定番号のCPUデスクリプタハンドルを取得する    
-    /// </summary>
-    D3D12_CPU_DESCRIPTOR_HANDLE GetSRVCPUDescriptorHandle(uint32_t index);
-    /// <summary>
-    /// SRVの指定番号のGPUデスクリプタハンドルを取得する
-    /// </summary>
-    D3D12_GPU_DESCRIPTOR_HANDLE GetSRVGPUDescriptorHandle(uint32_t index);
-
+   
     uint32_t descriptorSizeSRV = 0;
     uint32_t descriptorSizeRTV = 0;
     uint32_t descriptorSizeDSV = 0;
@@ -101,7 +116,14 @@ public:
     //include対応のため設定しておく
     IDxcIncludeHandler* includeHandler = nullptr;
 
-private:
+    //フェンスの生成
+    Microsoft::WRL::ComPtr<ID3D12Fence> fence = nullptr;
+    UINT64 fenceVal = 0;
+    HANDLE fenceEvent = nullptr;
+
+    D3D12_VIEWPORT viewport{};
+    D3D12_RECT scissorRect{};
+
 
     WinApp* winApp_ = nullptr;
 

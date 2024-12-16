@@ -523,7 +523,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	DirectXCommon* dxCommon = nullptr;
 	dxCommon = new DirectXCommon();
 	dxCommon->Initialize(winApp_);
-
+	dxCommon->PreDraw();
+	dxCommon->PostDraw();
 	//ウインドウを表示する
 	ShowWindow(winApp_->GetHwnd(), SW_SHOW);
 
@@ -1168,7 +1169,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			//barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
 
 			//barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
-
+			
 			//barrier.Transition.pResource = swapChainResources[backBufferIndex].Get();
 
 			//barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_PRESENT;
