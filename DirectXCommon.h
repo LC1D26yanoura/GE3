@@ -67,6 +67,29 @@ public:
     /// </summary>
     D3D12_GPU_DESCRIPTOR_HANDLE GetSRVGPUDescriptorHandle(uint32_t index);
 
+    //getter
+    ID3D12Device* GetDevice()const { return device.Get(); }
+    ID3D12GraphicsCommandList* GetCommandList()const { return commandList.Get(); }
+
+    //シェーダーのコンパイル
+    Microsoft::WRL::ComPtr<IDxcBlob>CompileShader(const std::wstring& filePath, const wchar_t* profile);
+
+/// <summary>
+/// バッファリソースの生成
+/// </summary>
+    Microsoft::WRL::ComPtr<ID3D12Resource>CreateBufferResource(size_t sizeInBytes);
+
+/// <summary>
+/// テクスチャリソースの生成
+/// </summary>
+    Microsoft::WRL::ComPtr<ID3D12Resource> CreateTextureResource(ID3D12Device*device, const DirectX::TexMetadata& metadata);
+
+/// <summary>
+/// テクスチャデータの転送
+/// </summary>
+    [[nodiscard]]
+    Microsoft::WRL::ComPtr<ID3D12Resource> UploadTextureData(ID3D12Resource* texture, const DirectX::ScratchImage& mipImages);
+
 private:
 
     //// デバイスの生成
