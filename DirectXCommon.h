@@ -4,10 +4,10 @@
 #include <d3d12.h>
 #include <dxgi1_6.h>
 #include <array>
-#include "StringUtility.h"
 #include "Logger.h"
 #include "externals/DirectXTex/DirectXTex.h"
 #include <dxcapi.h>
+#include "externals/DirectXTex/d3dx12.h"
 class DirectXCommon
 {
 public:
@@ -70,6 +70,11 @@ public:
     //getter
     ID3D12Device* GetDevice()const { return device.Get(); }
     ID3D12GraphicsCommandList* GetCommandList()const { return commandList.Get(); }
+    Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> GetDSVDescriptorHeap() const { return dsvDescriptorHeap; }
+    Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> GetRTVDescriptorHeap() const { return rtvDescriptorHeap; }
+    Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> GetSRVDescriptorHeap() const { return srvDescriptorHeap; }
+    uint32_t GetDescriptorSizeRTV()const { return descriptorSizeRTV; }
+    uint32_t GetDescriptorSizeSRV()const { return descriptorSizeSRV; }
 
     //シェーダーのコンパイル
     Microsoft::WRL::ComPtr<IDxcBlob>CompileShader(const std::wstring& filePath, const wchar_t* profile);
@@ -82,13 +87,22 @@ public:
 /// <summary>
 /// テクスチャリソースの生成
 /// </summary>
-    Microsoft::WRL::ComPtr<ID3D12Resource> CreateTextureResource(ID3D12Device*device, const DirectX::TexMetadata& metadata);
+    Microsoft::WRL::ComPtr<ID3D12Resource> CreateTextureResource(Microsoft::WRL::ComPtr<ID3D12Device> device, const DirectX::TexMetadata& metadata);
 
 /// <summary>
 /// テクスチャデータの転送
 /// </summary>
     [[nodiscard]]
-    Microsoft::WRL::ComPtr<ID3D12Resource> UploadTextureData(ID3D12Resource* texture, const DirectX::ScratchImage& mipImages);
+    Microsoft::WRL::ComPtr<ID3D12Resource> UploadTextureData(Microsoft::WRL::ComPtr<ID3D12Resource> texture, const DirectX::ScratchImage& mipImages);
+/// <summary>
+/// テクスチャデータの読み込み
+/// </summary>
+    static DirectX::ScratchImage LoadTexture(const std::string& filePath);
+
+    /// <summary>
+    /// 深度ステンシルテクスチャリソースの生成
+    /// 
+    Microsoft::WRL::ComPtr<ID3D12Resource> CreateDepthStencilTextureResource(Microsoft::WRL::ComPtr<ID3D12Device> device, int32_t width, int32_t height);
 
 private:
 
@@ -122,16 +136,12 @@ private:
     Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> rtvDescriptorHeap = nullptr;
     Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> srvDescriptorHeap = nullptr;
     Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> dsvDescriptorHeap = nullptr;
-
-    Microsoft::WRL::ComPtr <ID3D12Resource> depthStencilResource;
-
     //Microsoft::WRL::ComPtr<ID3D12Resource> CreateTextureResource(Microsoft::WRL::ComPtr<ID3D12Device> device, const DirectX::TexMetadata& metadata);
- 
-
    
     uint32_t descriptorSizeSRV = 0;
     uint32_t descriptorSizeRTV = 0;
     uint32_t descriptorSizeDSV = 0;
+    Microsoft::WRL::ComPtr <ID3D12Resource> depthStencilResource;
 
     //DXCの初期化
     IDxcUtils* dxcUtils = nullptr;
