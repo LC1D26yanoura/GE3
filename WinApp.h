@@ -1,29 +1,30 @@
 #pragma once
 #include <Windows.h>
 #include <cstdint>
+#include <wrl.h>
+#include <WinUser.h>
+
+
+
 class WinApp
 {
 public:
-	static LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
+	static LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wparm, LPARAM lparam);
 
-public:
+	void Initialize();
+	void Update();
+	void Finalize();
+
 	static const int32_t kClientWidth = 1280;
 	static const int32_t kClientHeight = 720;
-public:
-	void Initialize();
 
-	void Update();
-
-	void Finalize();
-	//getter
 	HWND GetHwnd() const { return hwnd; }
-	HINSTANCE GetHinstance() const { return wc.hInstance; }
-	//メッセージの処理
-	bool ProcessMessage();
+	HINSTANCE GetInstance() const { return wc.hInstance; }
+
+	bool ProsessMeassage();
+
 private:
-	//ウィンドウハンドル
+
 	HWND hwnd = nullptr;
-	//
 	WNDCLASS wc{};
 };
-

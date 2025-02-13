@@ -1,9 +1,9 @@
 #include <windows.h>
 #include <stringapiset.h>
 #include <string>
-#include "StringUtility.h"
 
-namespace StringUitilty {
+namespace StringUitilty
+{
     std::wstring ConvertString(const std::string& str)
     {
         int size_needed = MultiByteToWideChar(CP_UTF8, 0, &str[0], (int)str.size(), NULL, 0);
@@ -20,13 +20,3 @@ namespace StringUitilty {
         return strTo;
     }
 };
-
-std::wstring StringUtility::ConvertString(const std::string& str)
-{
-    return std::wstring();
-}
-
-std::string StringUtility::ConvertString(const std::wstring& str)
-{
-    return std::string();
-}
