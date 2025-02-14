@@ -202,16 +202,6 @@ ModelData LoaObjFile(const std::string& directoryPath, const std::string& filena
 
 }
 
-TransformVector3 transform{ {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
-
-// コールバック関数のプロトタイプ宣言
-typedef void (*Callback)(int result);
-
-void judge_result(int result) {
-	transform.rotate.x += 0.1f;
-}
-
-
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	D3DResourceLeakChecker LeakCheak;
 
@@ -231,8 +221,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	dxCommon = new DirectXCommon();
 	dxCommon->Initialize(winApp_);
 
-	//ウインドウを表示する
-	ShowWindow(winApp_->GetHwnd(), SW_SHOW);
+	
 
 #pragma endregion
 
@@ -336,11 +325,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 
 	Microsoft::WRL::ComPtr<IDxcBlob> vertexShaderBlobComPtr = dxCommon->compileShader(L"resources/shaders/Object3D.VS.hlsl", L"vs_6_0");
-	IDxcBlob* vertexShaderBlob = vertexShaderBlobComPtr.Get();
+	Microsoft::WRL::ComPtr <IDxcBlob> vertexShaderBlob = vertexShaderBlobComPtr.Get();
 	assert(vertexShaderBlob != nullptr);
 
 	Microsoft::WRL::ComPtr<IDxcBlob> PicselShaderBlobComPtr = dxCommon->compileShader(L"resources/shaders/Object3D.PS.hlsl", L"ps_6_0");
-	IDxcBlob* pixelShaderBlob = PicselShaderBlobComPtr.Get();
+	Microsoft::WRL::ComPtr <IDxcBlob> pixelShaderBlob = PicselShaderBlobComPtr.Get();
 	assert(pixelShaderBlob != nullptr);
 
 	//ここから03_01
@@ -372,12 +361,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	graphicsPinpelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 	Microsoft::WRL::ComPtr<ID3D12Resource> depthStencilResouce = dxCommon->CreateDepthStencilTextureResource(dxCommon->GetDevice(), WinApp::kClientWidth, WinApp::kClientHeight);
-
-	//ここから03_01
-	D3D12_DEPTH_STENCIL_VIEW_DESC dsvDesc{};
-	dsvDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-	dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
-	dxCommon->GetDevice()->CreateDepthStencilView(depthStencilResouce.Get(), &dsvDesc, dxCommon->GetDSVDescriptorHeap()->GetCPUDescriptorHandleForHeapStart());
+	
 	//ここから03_01
 
 
@@ -404,21 +388,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	//Resourcef
 	const uint32_t kSubdivision = 36;
 
-	////VertexResourceを生成
-	//Microsoft::WRL::ComPtr<ID3D12Resource> vertexResourceComPtr = dxCommon->CreateBufferResource(sizeof(VertexData) * kSubdivision * kSubdivision * 6);
-	//ID3D12Resource* vertexResource = vertexResourceComPtr.Get();
-
 	//モデル読み込み
 	ModelData modelData = LoaObjFile("resources", "plane.obj");
-
-	//ModelData modelData = LoaObjFile("resources", "plane.obj");
-	//ModelData modelData = LoaObjFile("resources", "plane.obj");
 
 	//頂点リソースを作る
 	Microsoft::WRL::ComPtr<ID3D12Resource> vertexReComPtr = dxCommon->CreateBufferResource(sizeof(VertexData) * modelData.vertices.size());
 	ID3D12Resource* vertexResource = vertexReComPtr.Get();
-
-
 
 	//頂点バッファビューを作成する
 	D3D12_VERTEX_BUFFER_VIEW vertexBufferView{};
@@ -590,10 +565,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		}
 		else
 		{
-			Callback callback = judge_result;
-
-			callback(0);
-
+		
 			// GE3
 			input->Update();
 
