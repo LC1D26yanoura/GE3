@@ -202,6 +202,14 @@ ModelData LoaObjFile(const std::string& directoryPath, const std::string& filena
 
 }
 
+// コールバック関数のプロトタイプ宣言
+typedef void (*Callback)(int result);
+
+void judge_result(int result) {
+	transform.rotate.x += 0.1f;
+}
+
+
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	D3DResourceLeakChecker LeakCheak;
 
