@@ -589,6 +589,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		}
 		else
 		{
+			Callback callback = judge_result;
+
+			callback(0);
+
 			// GE3
 			input->Update();
 
