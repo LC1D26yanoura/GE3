@@ -203,7 +203,7 @@ ModelData LoaObjFile(const std::string& directoryPath, const std::string& filena
 }
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
-	//D3DResourceLeakChecker LeakCheak;
+	D3DResourceLeakChecker LeakCheak;
 
 	WinApp* winApp_ = nullptr;
 	winApp_ = new WinApp();
@@ -625,7 +625,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			// ImGuiの描画
 			ImGui::Render();
-			ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), dxCommon->GetCommandList());
+			ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), dxCommon->commandList.Get());
 
 
 
@@ -674,6 +674,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	delete input;
 	delete winApp_;
 	delete dxCommon;
+
 	//winApp_ = nullptr;
 
 

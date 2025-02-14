@@ -70,8 +70,8 @@ public:
 
 
     //Getter
-    ID3D12Device* GetDevice() const { return device.Get(); }
-    ID3D12GraphicsCommandList* GetCommandList() const { return commandList.Get(); }
+    Microsoft::WRL::ComPtr<ID3D12Device> GetDevice() const { return device; }
+    Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> GetCommandList() const { return commandList; }
     Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> GetDSVDescriptorHeap() const { return dsvDescriptorHeap; }
     Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> GetRTVDescriptorHeap() const { return rtvDescriptorHeap; }
     Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> GetSRVDescriptorHeap() const { return srvDescriptorHeap; }
@@ -109,6 +109,12 @@ public:
     /// 
     Microsoft::WRL::ComPtr<ID3D12Resource> CreateDepthStencilTextureResource(Microsoft::WRL::ComPtr<ID3D12Device> device, int32_t width, int32_t height);
 
+    //コマンドキュー生成
+    Microsoft::WRL::ComPtr<ID3D12CommandQueue> commandQueue = nullptr;
+    //コマンドアロケータを生成する
+    Microsoft::WRL::ComPtr<ID3D12CommandAllocator>commandAllocator = nullptr;
+    //コマンドリストを生成する
+    Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> commandList = nullptr;
 private:
 
     //// デバイスの生成
@@ -120,12 +126,6 @@ private:
     Microsoft::WRL::ComPtr<ID3D12Device> device = nullptr;
     //Microsoft::WRL::ComPtr<ID3D12InfoQueue> infoQueue = nullptr;
 
-    //コマンドキュー生成
-    Microsoft::WRL::ComPtr<ID3D12CommandQueue> commandQueue = nullptr;
-    //コマンドアロケータを生成する
-    Microsoft::WRL::ComPtr<ID3D12CommandAllocator>commandAllocator = nullptr;
-    //コマンドリストを生成する
-    Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> commandList = nullptr;
 
     //SwapChain
     Microsoft::WRL::ComPtr<IDXGISwapChain4> swapChain = nullptr;
@@ -150,10 +150,10 @@ private:
     uint32_t descriptorSizeDSV = 0;
 
     //DXCの初期化
-    IDxcUtils* dxcUtils = nullptr;
-    IDxcCompiler3* dxcCompiler = nullptr;
+    Microsoft::WRL::ComPtr<IDxcUtils> dxcUtils = nullptr;
+    Microsoft::WRL::ComPtr<IDxcCompiler3> dxcCompiler = nullptr;
     //include対応のため設定しておく
-    IDxcIncludeHandler* includeHandler = nullptr;
+    Microsoft::WRL::ComPtr<IDxcIncludeHandler> includeHandler = nullptr;
 
     //フェンスの生成
     Microsoft::WRL::ComPtr<ID3D12Fence> fence = nullptr;

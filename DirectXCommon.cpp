@@ -213,7 +213,7 @@ Microsoft::WRL::ComPtr<ID3D12Resource>DirectXCommon::CreateDepthBuffer()
 	depthClearValue.DepthStencil.Depth = 1.0f;
 	depthClearValue.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
-	ComPtr<ID3D12Resource> resource;
+	Microsoft::WRL::ComPtr<ID3D12Resource> resource;
 	HRESULT hr = device->CreateCommittedResource(
 		&heapProperties,
 		D3D12_HEAP_FLAG_NONE,
@@ -395,7 +395,7 @@ void DirectXCommon::PostDraw()
 
 	// GPUにコマンドリストの実行を行わせる
 
-	ID3D12CommandList* commandLists[] = { commandList.Get() };
+    ID3D12CommandList* commandLists[] = { commandList.Get() };
 
 	commandQueue->ExecuteCommandLists(1, commandLists);
 
@@ -489,7 +489,7 @@ Microsoft::WRL::ComPtr<IDxcBlob> DirectXCommon::compileShader(const std::wstring
 	};
 
 	IDxcResult* shaderResult = nullptr;
-	hr = dxcCompiler->Compile(&shaderSourceBeffer, arguments, _countof(arguments), includeHandler, IID_PPV_ARGS(&shaderResult));
+	hr = dxcCompiler->Compile(&shaderSourceBeffer, arguments, _countof(arguments), includeHandler.Get(), IID_PPV_ARGS(&shaderResult));
 
 	assert(SUCCEEDED(hr));
 
@@ -573,7 +573,6 @@ Microsoft::WRL::ComPtr<ID3D12Resource> DirectXCommon::CreateTextureResource(Micr
 	assert(SUCCEEDED(hr));
 	return resource;
 }
-
 Microsoft::WRL::ComPtr<ID3D12Resource> DirectXCommon::UploadTextureData(Microsoft::WRL::ComPtr<ID3D12Resource> texture, const DirectX::ScratchImage& mipImages)
 {
 	std::vector<D3D12_SUBRESOURCE_DATA> subresources;
