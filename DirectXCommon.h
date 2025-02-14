@@ -8,6 +8,8 @@
 #include "Logger.h"
 #include "externals/DirectXTex/DirectXTex.h"
 #include <dxcapi.h>
+#include <chrono>
+#include <thread>
 
 class DirectXCommon
 {
@@ -119,6 +121,12 @@ public:
     Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> commandList = nullptr;
 
 private:
+    //FPS固定初期化
+    void InitializeFixFPS();
+    //FPS固定更新
+    void UpdateFixFPS();
+    //記録時間(FPS固定用)
+    std::chrono::steady_clock::time_point reference_;
 
     //// デバイスの生成
     //Microsoft::WRL::ComPtr<ID3D12Debug1> debugController = nullptr;
