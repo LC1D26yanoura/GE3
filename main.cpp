@@ -667,6 +667,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		}
 	}
 
+	dxCommon->Finalize();
 
 	//Windows終了
 	winApp_->Finalize();
@@ -678,7 +679,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	//winApp_ = nullptr;
 
 
-	//CloseHandle(fenceEvent);
+	//CloseHandle(dxCommon->fenceEvent);
 
 	//CoUninitialize();
 	return 0;

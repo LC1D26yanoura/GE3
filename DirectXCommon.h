@@ -44,6 +44,8 @@ public:
     void PreDraw();
     //描画後処理
     void PostDraw();
+    //
+    void Finalize();
 
     //Microsoft::WRL::ComPtr<ID3D12Resource> CreateTextureResource(Microsoft::WRL::ComPtr<ID3D12Device> device, const DirectX::TexMetadata& metadata);
     Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> CreateDescriptorHeap(Microsoft::WRL::ComPtr<ID3D12Device> device,
@@ -115,6 +117,7 @@ public:
     Microsoft::WRL::ComPtr<ID3D12CommandAllocator>commandAllocator = nullptr;
     //コマンドリストを生成する
     Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> commandList = nullptr;
+
 private:
 
     //// デバイスの生成
