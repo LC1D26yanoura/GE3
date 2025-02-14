@@ -220,6 +220,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	winApp_->Initialize();
 
 #pragma region Windowの生成
+	
 
 	//GE3
 	Input* input = nullptr;
