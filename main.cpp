@@ -202,6 +202,8 @@ ModelData LoaObjFile(const std::string& directoryPath, const std::string& filena
 
 }
 
+TransformVector3 transform{ {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
+
 // コールバック関数のプロトタイプ宣言
 typedef void (*Callback)(int result);
 
