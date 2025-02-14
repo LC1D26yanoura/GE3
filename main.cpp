@@ -359,8 +359,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	graphicsPinpelineStateDesc.DepthStencilState = depthStencilDesc;
 	graphicsPinpelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
-
-	Microsoft::WRL::ComPtr<ID3D12Resource> depthStencilResouce = dxCommon->CreateDepthStencilTextureResource(dxCommon->GetDevice(), WinApp::kClientWidth, WinApp::kClientHeight);
 	
 	//ここから03_01
 
